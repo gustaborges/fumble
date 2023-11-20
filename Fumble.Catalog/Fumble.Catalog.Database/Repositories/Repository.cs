@@ -1,6 +1,4 @@
-﻿using Fumble.Catalog.Database;
-
-namespace Fumble.Catalog.Database.Repositories
+﻿namespace Fumble.Catalog.Database.Repositories
 {
     public abstract class Repository
     {

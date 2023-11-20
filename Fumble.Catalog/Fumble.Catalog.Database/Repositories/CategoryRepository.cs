@@ -1,4 +1,5 @@
-﻿using Fumble.Catalog.Domain.Models;
+﻿using Fumble.Catalog.Database.Exceptions;
+using Fumble.Catalog.Domain.Models;
 using Fumble.Catalog.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,20 @@ namespace Fumble.Catalog.Database.Repositories
     {
         public CategoryRepository(FumbleDbContext dbContext) : base(dbContext)
         {
+        }
+
+        public async Task<Category> GetCategoryAsync(Guid id, bool includeProducts = false)
+        {
+            var query = DbContext.Categories.AsNoTracking();
+
+            if (includeProducts)
+            {
+                query = query.Include(x => x.Products);
+            }
+
+            var category = await query.FirstOrDefaultAsync(x => x.Id == id);
+                
+            return category ?? throw new EntityNotFoundException(nameof(Category), id);
         }
 
         public async Task<IList<Category>> GetCategoriesAsync(IList<Guid> ids, bool includeProducts=false)
@@ -22,7 +37,6 @@ namespace Fumble.Catalog.Database.Repositories
             }
 
             return await query.ToListAsync();
-
         }
 
         public async Task<IList<Category>> GetCategoriesAsync(int take, int skip, bool includeProducts=false)
@@ -42,7 +56,6 @@ namespace Fumble.Catalog.Database.Repositories
         public async Task CreateCategoryAsync(Category category)
         {
             await DbContext.Categories.AddAsync(category);
-            await DbContext.SaveChangesAsync();
         }
 
         public async Task<bool> CanFindCategoriesAsync(IList<Guid> ids)

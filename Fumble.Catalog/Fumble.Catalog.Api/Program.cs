@@ -1,6 +1,4 @@
 using Fumble.Catalog.Database;
-using Fumble.Catalog.Database.Repositories;
-using Fumble.Catalog.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,8 +7,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<CatalogUnitOfWork>();
+
 builder.Services.AddDbContext<FumbleDbContext>(options =>
 {
     string dbHost = builder.Configuration["CATALOG_DB_HOST"];

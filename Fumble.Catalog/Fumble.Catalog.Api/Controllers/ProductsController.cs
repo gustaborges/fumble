@@ -1,6 +1,7 @@
 ﻿using Fumble.Catalog.Api.ViewModels;
 using Fumble.Catalog.Api.ViewModels.Category;
 using Fumble.Catalog.Api.ViewModels.Product;
+using Fumble.Catalog.Database;
 using Fumble.Catalog.Database.Exceptions;
 using Fumble.Catalog.Domain.Models;
 using Fumble.Catalog.Domain.Repositories;
@@ -11,15 +12,12 @@ namespace Fumble.Controllers
     [Route("/api/v1/catalog/products")]
     public class ProductsController : Controller
     {
-        private IProductRepository _productRepository;
-        private ICategoryRepository _categoryRepository;
+        private CatalogUnitOfWork _unitOfWork;
 
         public ProductsController(
-            [FromServices] IProductRepository productRepository,
-            [FromServices] ICategoryRepository categoryRepository)
+            [FromServices] CatalogUnitOfWork unitOfWork)
         {
-            _categoryRepository = categoryRepository;
-            _productRepository = productRepository;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
@@ -29,7 +27,7 @@ namespace Fumble.Controllers
         {
             try
             {
-                IEnumerable<Product> products = await _productRepository.GetProductsAsync(take, skip, includeCategories: true);
+                IEnumerable<Product> products = await _unitOfWork.ProductRepository.GetProductsAsync(take, skip, includeCategories: true);
 
                 var result = products.Select(p => new ProductGetViewModel()
                 {
@@ -57,7 +55,7 @@ namespace Fumble.Controllers
         {
             try
             {
-                if (!await _categoryRepository.CanFindCategoriesAsync(model.Categories))
+                if (!await _unitOfWork.CategoryRepository.CanFindCategoriesAsync(model.Categories))
                 {
                     return BadRequest(ResponsePayload.Error("FCP_E40", new() { "One or more categories do not exist" }));
                 }
@@ -70,7 +68,8 @@ namespace Fumble.Controllers
                     Categories = model.Categories.Select(id => new Category { Id = id }).ToList()
                 };
 
-                await _productRepository.CreateProductAsync(product);
+                await _unitOfWork.ProductRepository.CreateProductAsync(product);
+                await _unitOfWork.SaveChangesAsync();
 
                 return Created(string.Empty, ResponsePayload.Success(product.Id));
             }
@@ -88,7 +87,8 @@ namespace Fumble.Controllers
         {
             try
             {
-                await _productRepository.DeleteProductAsync(id);
+                await _unitOfWork.ProductRepository.DeleteProductAsync(id);
+                await _unitOfWork.SaveChangesAsync();
 
                 return StatusCode(StatusCodes.Status200OK, ResponsePayload.Success($"Deleted product {id}"));
             }

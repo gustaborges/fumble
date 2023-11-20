@@ -19,14 +19,12 @@ namespace Fumble.Catalog.Database.Repositories
             }
 
             await DbContext.Products.AddAsync(product);
-            await DbContext.SaveChangesAsync();
         }
 
         public async Task DeleteProductAsync(Guid id)
         {
             Product product = await GetTrackableProductAsync(id);
             DbContext.Products.Remove(product);
-            await DbContext.SaveChangesAsync();
         }
 
         private async Task<Product> GetTrackableProductAsync(Guid id)

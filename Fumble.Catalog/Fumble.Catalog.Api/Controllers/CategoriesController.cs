@@ -1,7 +1,7 @@
 ﻿using Fumble.Catalog.Api.ViewModels;
 using Fumble.Catalog.Api.ViewModels.Category;
+using Fumble.Catalog.Database;
 using Fumble.Catalog.Domain.Models;
-using Fumble.Catalog.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fumble.Controllers
@@ -9,21 +9,21 @@ namespace Fumble.Controllers
     [Route("/api/v1/catalog/categories")]
     public class CategoriesController : ControllerBase
     {
-        private ICategoryRepository _categoryRepository;
+        private CatalogUnitOfWork _unitOfWork;
 
-        public CategoriesController([FromServices] ICategoryRepository categoryRepository)
+        public CategoriesController([FromServices] CatalogUnitOfWork unityOfWork)
         {
-            _categoryRepository = categoryRepository;
+            _unitOfWork = unityOfWork;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(SuccessResponsePayload<CategoryGetViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SuccessResponsePayload<IEnumerable<CategoryGetViewModel>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponsePayload), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetCategories([FromQuery] int take = 15, [FromQuery] int skip = 0)
         {
             try
             {
-                var categories = await _categoryRepository.GetCategoriesAsync(take, skip, includePosts: true);
+                var categories = await _unitOfWork.CategoryRepository.GetCategoriesAsync(take, skip, includePosts: true);
 
                 var result = categories.Select(x => new CategoryGetViewModel()
                 {
@@ -32,6 +32,31 @@ namespace Fumble.Controllers
                     CreatedAt = x.CreatedAt,
                     Products = x.Products?.Select(p => p.Id).ToList()
                 });
+
+                return Ok(ResponsePayload.Success(result));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ResponsePayload.Error("FCC_E50"));
+            }
+        }
+
+        [HttpGet("{id}", Name = "GetCategory")]
+        [ProducesResponseType(typeof(SuccessResponsePayload<CategoryGetViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponsePayload), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetCategory([FromRoute] Guid id)
+        {
+            try
+            {
+                var category = await _unitOfWork.CategoryRepository.GetCategoryAsync(id, includePosts: true);
+
+                var result = new CategoryGetViewModel()
+                {
+                    Id = category.Id,
+                    Name = category.Name,
+                    CreatedAt = category.CreatedAt,
+                    Products = category.Products?.Select(p => p.Id).ToList()
+                };
 
                 return Ok(ResponsePayload.Success(result));
             }
@@ -54,9 +79,10 @@ namespace Fumble.Controllers
                     CreatedAt = DateTime.UtcNow
                 };
 
-                await _categoryRepository.CreateCategoryAsync(category);
+                await _unitOfWork.CategoryRepository.CreateCategoryAsync(category);
+                await _unitOfWork.SaveChangesAsync();
 
-                return Created("", ResponsePayload.Success(category.Id));
+                return CreatedAtAction("GetCategory", category.Id, ResponsePayload.Success(category.Id)); ;
             }
             catch
             {
