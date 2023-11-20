@@ -1,0 +1,26 @@
+services:
+  postgresdb:
+    networks:
+      - catalog_database_network
+
+  catalog_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80/tcp"
+    depends_on:
+      - postgresdb
+    networks:
+      - catalog_database_network
+      - catalog_api_network
+    environment:
+      - CATALOG_DB_HOST=postgresdb
+      - CATALOG_DB_NAME=catalog_db
+      - CATALOG_DB_USER=postgres
+      - CATALOG_DB_PASSWORD=minhasenhasecreta
+      - ASPNETCORE_ENVIRONMENT=Development
+
+networks:
+  catalog_database_network:
+  catalog_api_network:

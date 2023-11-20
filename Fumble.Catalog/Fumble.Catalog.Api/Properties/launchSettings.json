@@ -1,0 +1,32 @@
+﻿{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:30555",
+      "sslPort": 44378
+    }
+  },
+  "profiles": {
+    "CatalogApi": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7032;http://localhost:5123;",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "CATALOG_DB_HOST": "localhost:5432",
+        "CATALOG_DB_NAME": "catalog_db",
+        "CATALOG_DB_USER": "postgres",
+        "CATALOG_DB_PASSWORD": "minhasenhasecreta"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

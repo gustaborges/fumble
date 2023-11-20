@@ -1,0 +1,14 @@
+volumes:
+  postgres_data:
+  
+services:
+  postgresdb:
+    image: postgres
+    environment:
+      - POSTGRES_DB=catalog_db
+      - POSTGRES_PASSWORD=minhasenhasecreta
+    ports:
+      - "5432:5432/tcp"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres_initial_db_script:/docker-entrypoint-initdb.d
