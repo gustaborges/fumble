@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Fumble.Discount.Grpc.Protos";
+
+service Discount {
+	rpc Apply (ApplyCouponRequest) returns (ApplyCouponResponse);
+	rpc CreateCoupon (CreateCouponRequest) returns (CreateCouponResponse);
+	rpc GetCoupons (GetCouponsRequest) returns (GetCouponsResponse);
+}
+
+message ApplyCouponRequest
+{
+	string CouponCode = 1;
+	repeated string ProductsIds = 2;
+}
+
+enum DiscountType {
+	UNSPECIFIED = 0;
+	PERCENTAGE = 1;
+    FIXED_AMOUNT = 2;
+}
+message ApplyCouponResponse {
+	string coupon_code = 1;
+	bool has_eligible_products = 2;
+	repeated string eligible_products = 3;
+	DiscountType discount_type = 4;
+	double discount = 5;
+}
+
+message CreateCouponRequest {
+	string coupon_code = 1;
+    optional string description = 2;        
+    google.protobuf.Timestamp campaign_start_date = 3;
+    optional google.protobuf.Timestamp campaign_end_date = 4;
+	DiscountType discount_type = 5;
+	double discount = 6;
+	repeated string products_ids = 7;
+}
+
+message CreateCouponResponse {
+	string id = 1;
+}
+
+message GetCouponsRequest {
+
+}
+
+message GetCouponsResponse {
+	repeated CouponViewModel coupons = 1;
+}
+
+message CouponViewModel {
+	string coupon_code = 1;
+    optional string description = 2;        
+    google.protobuf.Timestamp campaign_start_date = 3;
+    optional google.protobuf.Timestamp campaign_end_date = 4;
+	DiscountType discount_type = 5;
+	double discount = 6;
+	repeated string products_ids = 7;
+}
