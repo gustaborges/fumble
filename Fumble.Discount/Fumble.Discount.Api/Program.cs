@@ -1,0 +1,35 @@
+using Fumble.Discount.Database.DataContext;
+using Fumble.Discount.Database.Repositories;
+using Fumble.Discount.Domain.Repositories;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton(new CouponDatabaseConfigurations(
+        builder.Configuration["DISCOUNT_DB_CONNECTION_STRING"]!,
+        builder.Configuration["DISCOUNT_DB_NAME"]!,
+        builder.Configuration["DISCOUNT_DB_COUPONS_COLLECTION"]!
+    ));
+builder.Services.AddSingleton<ICouponDbContext, CouponDbContext>();
+builder.Services.AddScoped<ICouponRepository, CouponRepository>();
+
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();

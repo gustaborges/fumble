@@ -1,0 +1,30 @@
+version: '3.4'
+
+volumes:
+  mongo_data:
+
+
+services:
+  fumble.discount.database:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root12345
+    volumes:
+      - mongo_data:/data/db
+      - ./mongo_initdb:/docker-entrypoint-initdb.d
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8888:8081
+    depends_on:
+      - fumble.discount.database
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root12345
+      ME_CONFIG_MONGODB_URL: mongodb://root:root12345@fumble.discount.database:27017/
