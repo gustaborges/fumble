@@ -1,18 +1,19 @@
 version: '3.4'
 
+include:
+  - docker-compose.db.yml
+
 services:
-  fumble.discount.api:
-    image: ${DOCKER_REGISTRY-}fumblediscountapi
+  fumble.discount.grpc:
+    image: ${DOCKER_REGISTRY-}fumblediscountgrpc
     build:
       context: .
-      dockerfile: Fumble.Discount.Api/Dockerfile
+      dockerfile: Fumble.Discount.Grpc/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
+      - DISCOUNT_DB_CONNECTION_STRING=mongodb://root:root12345@fumble.discount.database/
+      - DISCOUNT_DB_NAME=fumble_discount_db
+      - DISCOUNT_DB_COUPONS_COLLECTION=coupons
+      
     ports:
-      - "8080"
-      - "8081"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - "8050:8080"

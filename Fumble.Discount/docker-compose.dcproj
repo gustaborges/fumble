@@ -7,10 +7,10 @@
     <ProjectGuid>aaf4c691-cdcb-45be-a95a-75a4eab7e0e2</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="docker-compose.db.yml">
-      <DependentUpon>docker-compose.yml</DependentUpon>
-    </None>
-    <None Include="docker-compose.yml" />
-    <None Include=".dockerignore" />
+   
+ 
+    <None Include="docker-compose.yml"/>
+
+      <None Include=".dockerignore" />
   </ItemGroup>
 </Project>

@@ -1,17 +1,24 @@
-﻿{
-  "$schema": "http://json.schemastore.org/launchsettings.json",
+{
   "profiles": {
     "Discount.Grpc Local": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "http://localhost:5125",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DISCOUNT_DB_CONNECTION_STRING": "mongodb://root:root12345@localhost:27017/",
         "DISCOUNT_DB_NAME": "fumble_discount_db",
         "DISCOUNT_DB_COUPONS_COLLECTION": "coupons"
-      }
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5125"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "ASPNETCORE_HTTP_PORTS": "8080"
+      },
+      "publishAllPorts": true
     }
-  }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json"
 }
