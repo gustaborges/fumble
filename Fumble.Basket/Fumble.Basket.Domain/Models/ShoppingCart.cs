@@ -1,14 +1,19 @@
-﻿namespace Fumble.Basket.Domain.Models
+﻿
+using Fumble.Basket.Api.Services.DiscountService.Dto;
+
+namespace Fumble.Basket.Domain.Models
 {
     public class ShoppingCart
     {
         public ShoppingCart(string userId)
         {
             UserId = userId;
+            RefreshLastUpdateTime();
         }
 
         public string UserId { get; }
-        public IList<ShoppingCartItem> Items { get; set; } = new List<ShoppingCartItem>();
+        public IList<ShoppingCartItem> Items { get; } = new List<ShoppingCartItem>();
+        public long LastUpdateUnixTime { get; private set;  }
 
         public decimal TotalPrice
         {
@@ -23,6 +28,23 @@
 
                 return totalPrice;
             }
+        }
+
+        public void ApplyDiscount(DiscountsInformation discounts)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool HasExpired(TimeSpan maxLifespan)
+        {
+            var lastUpdate = DateTimeOffset.FromUnixTimeMilliseconds(LastUpdateUnixTime).DateTime;
+
+            return lastUpdate < DateTime.UtcNow.Add(maxLifespan.Negate());
+        }
+
+        public void RefreshLastUpdateTime()
+        {
+            LastUpdateUnixTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         }
     }
 }

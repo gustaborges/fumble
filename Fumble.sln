@@ -1,0 +1,97 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BasketMicroservice", "BasketMicroservice", "{574C5C97-B1B7-454A-B0FA-5D14DB470694}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fumble.Basket.Api", "Fumble.Basket\Fumble.Basket.Api\Fumble.Basket.Api.csproj", "{A4264133-760F-4491-96B4-EFB30326DC77}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fumble.Basket.Domain", "Fumble.Basket\Fumble.Basket.Domain\Fumble.Basket.Domain.csproj", "{D818EDE8-D217-4344-A9D2-B8359BC1EA09}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DiscountMicroservice", "DiscountMicroservice", "{5D853403-904F-4EE7-BC9A-46A4058700DC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fumble.Discount.Grpc", "Fumble.Discount\Fumble.Discount.Grpc\Fumble.Discount.Grpc.csproj", "{0ED0587C-EB16-4345-AC8B-A388E978020B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fumble.Discount.Domain", "Fumble.Discount\Fumble.Discount.Domain\Fumble.Discount.Domain.csproj", "{B7B1104D-6D44-477E-801D-C8C2615C791B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fumble.Discount.Database", "Fumble.Discount\Fumble.Discount.Database\Fumble.Discount.Database.csproj", "{23204E27-9854-498C-8787-EDF50491884A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CatalogMicroservice", "CatalogMicroservice", "{68852183-5BE0-45CB-9CEB-B2FB81B5E5A7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fumble.Catalog.Api", "Fumble.Catalog\Fumble.Catalog.Api\Fumble.Catalog.Api.csproj", "{2347EE4E-F0B3-411D-B2EF-C7A6FBC9A00B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fumble.Catalog.Api.Client", "Fumble.Catalog\Fumble.Catalog.Api.Client\Fumble.Catalog.Api.Client.csproj", "{0F7A9BC2-05F2-40F0-A552-5F119A4EB7BC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fumble.Catalog.Database", "Fumble.Catalog\Fumble.Catalog.Database\Fumble.Catalog.Database.csproj", "{65C838B2-C633-4105-9F49-C9D910D12142}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fumble.Catalog.Database.Migrations", "Fumble.Catalog\Fumble.Catalog.Database.Migrations\Fumble.Catalog.Database.Migrations.csproj", "{2E03A7B8-DBD7-4C98-902C-9E915A6EFACA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fumble.Catalog.Domain", "Fumble.Catalog\Fumble.Catalog.Domain\Fumble.Catalog.Domain.csproj", "{81BD6B38-47BD-490C-AEFD-CDF777DC31CA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A4264133-760F-4491-96B4-EFB30326DC77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4264133-760F-4491-96B4-EFB30326DC77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4264133-760F-4491-96B4-EFB30326DC77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4264133-760F-4491-96B4-EFB30326DC77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D818EDE8-D217-4344-A9D2-B8359BC1EA09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D818EDE8-D217-4344-A9D2-B8359BC1EA09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D818EDE8-D217-4344-A9D2-B8359BC1EA09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D818EDE8-D217-4344-A9D2-B8359BC1EA09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ED0587C-EB16-4345-AC8B-A388E978020B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ED0587C-EB16-4345-AC8B-A388E978020B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ED0587C-EB16-4345-AC8B-A388E978020B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ED0587C-EB16-4345-AC8B-A388E978020B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7B1104D-6D44-477E-801D-C8C2615C791B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7B1104D-6D44-477E-801D-C8C2615C791B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7B1104D-6D44-477E-801D-C8C2615C791B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7B1104D-6D44-477E-801D-C8C2615C791B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23204E27-9854-498C-8787-EDF50491884A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23204E27-9854-498C-8787-EDF50491884A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23204E27-9854-498C-8787-EDF50491884A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23204E27-9854-498C-8787-EDF50491884A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2347EE4E-F0B3-411D-B2EF-C7A6FBC9A00B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2347EE4E-F0B3-411D-B2EF-C7A6FBC9A00B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2347EE4E-F0B3-411D-B2EF-C7A6FBC9A00B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2347EE4E-F0B3-411D-B2EF-C7A6FBC9A00B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F7A9BC2-05F2-40F0-A552-5F119A4EB7BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F7A9BC2-05F2-40F0-A552-5F119A4EB7BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F7A9BC2-05F2-40F0-A552-5F119A4EB7BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F7A9BC2-05F2-40F0-A552-5F119A4EB7BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65C838B2-C633-4105-9F49-C9D910D12142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65C838B2-C633-4105-9F49-C9D910D12142}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65C838B2-C633-4105-9F49-C9D910D12142}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65C838B2-C633-4105-9F49-C9D910D12142}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E03A7B8-DBD7-4C98-902C-9E915A6EFACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E03A7B8-DBD7-4C98-902C-9E915A6EFACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E03A7B8-DBD7-4C98-902C-9E915A6EFACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E03A7B8-DBD7-4C98-902C-9E915A6EFACA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81BD6B38-47BD-490C-AEFD-CDF777DC31CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81BD6B38-47BD-490C-AEFD-CDF777DC31CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81BD6B38-47BD-490C-AEFD-CDF777DC31CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81BD6B38-47BD-490C-AEFD-CDF777DC31CA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A4264133-760F-4491-96B4-EFB30326DC77} = {574C5C97-B1B7-454A-B0FA-5D14DB470694}
+		{D818EDE8-D217-4344-A9D2-B8359BC1EA09} = {574C5C97-B1B7-454A-B0FA-5D14DB470694}
+		{0ED0587C-EB16-4345-AC8B-A388E978020B} = {5D853403-904F-4EE7-BC9A-46A4058700DC}
+		{B7B1104D-6D44-477E-801D-C8C2615C791B} = {5D853403-904F-4EE7-BC9A-46A4058700DC}
+		{23204E27-9854-498C-8787-EDF50491884A} = {5D853403-904F-4EE7-BC9A-46A4058700DC}
+		{2347EE4E-F0B3-411D-B2EF-C7A6FBC9A00B} = {68852183-5BE0-45CB-9CEB-B2FB81B5E5A7}
+		{0F7A9BC2-05F2-40F0-A552-5F119A4EB7BC} = {68852183-5BE0-45CB-9CEB-B2FB81B5E5A7}
+		{65C838B2-C633-4105-9F49-C9D910D12142} = {68852183-5BE0-45CB-9CEB-B2FB81B5E5A7}
+		{2E03A7B8-DBD7-4C98-902C-9E915A6EFACA} = {68852183-5BE0-45CB-9CEB-B2FB81B5E5A7}
+		{81BD6B38-47BD-490C-AEFD-CDF777DC31CA} = {68852183-5BE0-45CB-9CEB-B2FB81B5E5A7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BCB1D79E-FBC2-44BB-9968-69E92003B709}
+	EndGlobalSection
+EndGlobal
