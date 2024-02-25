@@ -1,10 +1,10 @@
-﻿using Fumble.Basket.Api.Services.DiscountService;
-using Fumble.Basket.Api.Services.DiscountService.Dto;
+﻿using Fumble.Basket.Api.Extensions.GrpcMessages;
+using Fumble.Basket.Api.Services;
 using Fumble.Basket.Api.ViewModels;
 using Fumble.Basket.Domain.Models;
 using Fumble.Basket.Domain.Repositories;
+using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OutputCaching;
 
 namespace Fumble.Basket.Api.Controllers
 {
@@ -19,45 +19,46 @@ namespace Fumble.Basket.Api.Controllers
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        [HttpPost("{userId}")]
-        [OutputCache(Duration = 900)]     
+        [HttpGet("{userId}")]
         public async Task<IActionResult> GetBasket([FromRoute] string userId, [FromQuery] string? couponCode, [FromServices]IDiscountServiceClient discountClient)
         {
             try
             {
                 ShoppingCart basket = await _repository.GetBasketAsync(userId);
-                
-                if(basket.HasExpired(maxLifespan: TimeSpan.FromMinutes(15)))
-                {
-                    // TODO: Refresh basket: reverify stock, update prices, update basket
-                }
+
                 if (couponCode != null)
                 {
-                    var discounts = await discountClient.GetDiscountAsync(
-                        couponCode, 
+                    var discountResponse = await discountClient.GetDiscountAsync
+                    (
+                        couponCode,
                         productsIds: basket.Items.Select(x => x.ProductId).ToArray()
                     );
 
-                    basket.ApplyDiscount(discounts);
+                    basket.ApplyDiscount(discountResponse.ToCouponDiscount());
                 }
 
                 return Ok(ResponsePayload.Success(basket));
             }
+            catch(RpcException ex)
+            {
+                return BadRequest(ResponsePayload.Error("FB_E40", [ex.Status.Detail]));
+            }
             catch
             {
-                return StatusCode(500, ResponsePayload.Error("FB_E50"));
+                return StatusCode(500, ResponsePayload.Error("FB_E51"));
+
             }
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponsePayload), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateBasket([FromBody] ShoppingCart basket, [FromServices] IDiscountServiceClient discountClient)
+        public async Task<IActionResult> UpdateBasket([FromBody] UpdateBasketRequest basket, [FromServices] IDiscountServiceClient discountClient)
         {
             try
             {
-                basket.RefreshLastUpdateTime();
-                await _repository.UpdateBasketAsync(basket);
+                var model = new ShoppingCart(basket.UserId, basket.Items);
+                await _repository.UpdateBasketAsync(model);
 
                 return Ok();
             }
@@ -66,8 +67,5 @@ namespace Fumble.Basket.Api.Controllers
                 return StatusCode(500, ResponsePayload.Error("FB_E51"));
             }
         }
-
-
-        private record GetBasketResponse(IList<string> BasketItems, DiscountsDto Discounts);
     }
 }

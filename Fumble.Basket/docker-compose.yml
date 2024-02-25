@@ -1,0 +1,22 @@
+version: '3.4'
+
+include:
+  - ./docker-compose.infra.yml
+  - ../Fumble.Discount/docker-compose.yml
+
+services:
+  fumble.basket.api:
+    container_name: fumble.basket.api
+    image: ${DOCKER_REGISTRY-}fumblebasketapi
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - REDIS_CONNECTIONSTRING=fumble.basket.redis:6379,password=development
+      - DISCOUNT_SERVICE_URL=grpc://fumble.discount.grpc:8080
+    depends_on:
+      - fumble.basket.redis
+      - fumble.discount.grpc
+    ports:
+      - "8050:8080"

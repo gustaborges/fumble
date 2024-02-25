@@ -5,6 +5,7 @@ include:
 
 services:
   fumble.discount.grpc:
+    container_name: fumble.discount.grpc
     image: ${DOCKER_REGISTRY-}fumblediscountgrpc
     build:
       context: .
@@ -14,6 +15,7 @@ services:
       - DISCOUNT_DB_CONNECTION_STRING=mongodb://root:root12345@fumble.discount.database/
       - DISCOUNT_DB_NAME=fumble_discount_db
       - DISCOUNT_DB_COUPONS_COLLECTION=coupons
-      
+    depends_on:
+      - fumble.discount.database
     ports:
-      - "8050:8080"
+      - "8051:8080"

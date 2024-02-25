@@ -1,6 +1,6 @@
 ﻿namespace Fumble.Basket.Domain.Models
 {
-    public class ShoppingCartItem
+    public record ShoppingCartItem
     {
         public string ProductId { get; set; }
         public string ProductName { get; set; }

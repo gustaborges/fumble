@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  fumble.basket.redis:
+    container_name: fumble.basket.redis
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_PASSWORD: development

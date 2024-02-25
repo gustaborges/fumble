@@ -1,50 +1,88 @@
-﻿
-using Fumble.Basket.Api.Services.DiscountService.Dto;
-
-namespace Fumble.Basket.Domain.Models
+﻿namespace Fumble.Basket.Domain.Models
 {
     public class ShoppingCart
     {
-        public ShoppingCart(string userId)
+        private ShoppingCart() : this(string.Empty, []) { }
+
+        public ShoppingCart(string userId, IList<ShoppingCartItem> items)
         {
             UserId = userId;
+            Items = items;
             RefreshLastUpdateTime();
         }
 
-        public string UserId { get; }
-        public IList<ShoppingCartItem> Items { get; } = new List<ShoppingCartItem>();
+        public string UserId { get; init; }
+        public IList<ShoppingCartItem> Items { get; init; }
         public long LastUpdateUnixTime { get; private set;  }
+        public CouponDiscount? CouponDiscount { get; private set; }
 
-        public decimal TotalPrice
+        public decimal TotalPrice => CalculateTotalPrice(Items);
+
+        public decimal TotalPriceWithDiscount
         {
             get
             {
-                decimal totalPrice = 0;
+                if (CouponDiscount == null || !CouponDiscount.HasEligibleProducts)
+                    return CalculateTotalPrice(Items);
 
-                foreach (var item in Items)
-                {
-                    totalPrice += item.Price * item.Quantity;
-                }
+                if (CouponDiscount.DiscountType == DiscountType.PercentageOnTotal)
+                    return CalculateTotalPrice(Items) * CouponDiscount.Discount;
 
-                return totalPrice;
+                if (CouponDiscount.DiscountType == DiscountType.FixedAmountOnTotal)
+                    return Math.Max(0, CalculateTotalPrice(Items) - CouponDiscount.Discount);
+
+                if (CouponDiscount.DiscountType == DiscountType.PercentageOnEligibleProducts)
+                    return CalculateTotalPrice(GetItemsInelegibleForDiscount()) + CalculateTotalPrice(GetItemsElegibleForDiscount()) * (1 - CouponDiscount.Discount);
+
+                if (CouponDiscount.DiscountType == DiscountType.FixedAmountOnEligibleProducts)
+                    return CalculateTotalPrice(GetItemsInelegibleForDiscount()) + (Math.Max(0, CalculateTotalPrice(GetItemsElegibleForDiscount()) - CouponDiscount.Discount));
+
+                throw new Exception($"Discount type {CouponDiscount.DiscountType} not recognized");
             }
         }
 
-        public void ApplyDiscount(DiscountsInformation discounts)
+        private List<ShoppingCartItem> GetItemsInelegibleForDiscount()
         {
-            throw new NotImplementedException();
+            if (CouponDiscount is null)
+                return [];
+
+            return Items.Where(x => !CouponDiscount.EligibleProducts.Contains(x.ProductId)).ToList();
         }
 
-        public bool HasExpired(TimeSpan maxLifespan)
+        private List<ShoppingCartItem> GetItemsElegibleForDiscount()
         {
-            var lastUpdate = DateTimeOffset.FromUnixTimeMilliseconds(LastUpdateUnixTime).DateTime;
+            if (CouponDiscount is null)
+                return [];
 
-            return lastUpdate < DateTime.UtcNow.Add(maxLifespan.Negate());
+            return Items.Where(x => CouponDiscount.EligibleProducts.Contains(x.ProductId)).ToList();
         }
+
+        private decimal CalculateTotalPrice(IList<ShoppingCartItem> items)
+        {
+            decimal totalPrice = 0;
+
+            foreach (var item in items)
+            {
+                totalPrice += item.Price * item.Quantity;
+            }
+
+            return totalPrice;
+        }
+
+        public void ApplyDiscount(CouponDiscount couponDiscount)
+        {
+            CouponDiscount = couponDiscount;
+        }
+
 
         public void RefreshLastUpdateTime()
         {
             LastUpdateUnixTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        }
+
+        public static ShoppingCart Empty()
+        {
+            return new ShoppingCart();
         }
     }
 }

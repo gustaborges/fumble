@@ -25,7 +25,7 @@ namespace Fumble.Basket.Api.Repositories
 
             if(basketJson is null)
             {
-                return new ShoppingCart(userId);
+                return ShoppingCart.Empty();
             }
 
             return JsonSerializer.Deserialize<ShoppingCart>(basketJson)!;

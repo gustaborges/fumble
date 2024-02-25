@@ -1,13 +1,13 @@
 ﻿namespace Fumble.Basket.Domain.Models
 {
 
-    public class DiscountsInformation
+    public class CouponDiscount
     {
         public string CouponCode { get; set; } = "";
-        public List<string> EligibleProducts { get; set; } = [];
-        public bool HasEligibleProducts => EligibleProducts.Count > 0;
+        public string[] EligibleProducts { get; set; } = [];
+        public bool HasEligibleProducts => EligibleProducts.Length > 0;
         public DiscountType DiscountType { get; set; }
-        public double Discount { get; set; }
+        public decimal Discount { get; set; }
     }
 
     public enum DiscountType
